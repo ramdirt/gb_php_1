@@ -17,7 +17,6 @@ if(!empty($_FILES)) {
     $name = time() . $_FILES["image"]["name"];
     $path = __DIR__ . "/gallery_img/big/{$name}";
 
-// header("location: template.html");
     if (move_uploaded_file($tmp, $path)) {
         include "./classSimpleImage.php";
         $image = new SimpleImage();
