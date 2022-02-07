@@ -1,9 +1,9 @@
 <?php
-require 'db.php';
-global $db;
+require "./classSimpleImage.php";
+require '../db.php';
 
 function redirect($status) {
-    header("Location: index.php?message=" . $status);
+    header("Location: ../index.php?message=" . $status);
 }
 
 if(!empty($_FILES)) {
@@ -26,7 +26,7 @@ if(!empty($_FILES)) {
     $path = __DIR__ . "/gallery_img/big/{$name}";
 
     if (move_uploaded_file($tmp, $path)) {
-        include "./classSimpleImage.php";
+
         $image = new SimpleImage();
         $image->load($path);
         $image->resize(150,100);

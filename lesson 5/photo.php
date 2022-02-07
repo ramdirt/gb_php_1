@@ -8,7 +8,7 @@ $id = (int)$_GET['id'];
 $photo = mysqli_query($db, "SELECT * FROM image WHERE id = '$id'");
 $photo = mysqli_fetch_assoc($photo);
 
-updateRating($id);
+updateRating($db, $id);
 
 ?>
 <!doctype html>
