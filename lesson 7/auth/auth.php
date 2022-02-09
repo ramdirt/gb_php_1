@@ -11,28 +11,23 @@ session_start();
 </head>
 <body>
 <div class="container mt-5">
-    <form method="post" action="./vendor/signin.php" id="formAddComment">
+    <form id="formAddComment" class="formAuth">
         <div class="row g-3">
             <div class="col-4">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="login" value="Aleksey">
+                    <input type="text" class="form-control" placeholder="name@example.com" name="login" >
                     <label for="floatingInput">Логин</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" value="123">
+                    <input type="password" class="form-control" placeholder="Password" name="password">
                     <label for="floatingPassword">Пароль</label>
                 </div>
                 <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">Войти</button>
-                    <a href="register.php" class="btn btn-outline-primary">Регистрация</a>
+                    <button class="btn btn-primary btn-login mb-2">Войти</button>
+                    <a href="register.php" class="btn btn-outline-primary mb-2">Регистрация</a>
                 </div>
                 <div class="bg-warning mt-3">
-                    <?php
-                    if(!empty($_SESSION['message'])) {
-                        echo $_SESSION['message'];
-                    }
-                    unset($_SESSION['message']);
-                    ?>
+                    <p class="message"></p>
                 </div>
             </div>
 
@@ -41,6 +36,6 @@ session_start();
     </form>
 </div>
 
-
+<script src="assets/js/main.js"></script>
 </body>
 </html>
