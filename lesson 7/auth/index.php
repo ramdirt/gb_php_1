@@ -16,7 +16,7 @@ if(!$_SESSION['user']) {
 <body>
 <div class="container mt-5">
     <h1>Главная страница</h1>
-    <a class="btn btn-danger" href="./vendor/logout.php">Выйти</a>
+    <a class="btn btn-danger" href="vendor/logout.php">Выйти</a>
 </div>
 
 

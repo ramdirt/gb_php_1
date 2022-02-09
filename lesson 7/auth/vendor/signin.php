@@ -1,9 +1,25 @@
 <?php
     session_start();
     require_once 'connect.php';
+    require_once 'responce.php';
 
     $login = $_POST['login'];
-    $password = md5($_POST['password']);
+    $password = $_POST['password'];
+
+    $error = array();
+    if($login === '') {
+        $error[] = 'login';
+    }
+    if($password === '') {
+        $error[] = 'password';
+    }
+    if(!empty($error)) {
+        responce(false, $error);
+        die();
+    }
+
+    $password = md5($password);
+
 
     $sql = "SELECT * FROM users WHERE login = '$login' AND password = '$password'";
     $check_user = mysqli_query($connect, $sql);
@@ -18,9 +34,7 @@
             "email" => $user['email']
          ];
 
-        header('location: ../index.php');
-
+        responce(true, 'Авторизация прошла успешно');
     } else {
-        $_SESSION['message'] = 'Логин или пароль не совпадают';
-        header('location: ../auth.php');
+        responce(false, 'Логин или пароль не верны');
     }
