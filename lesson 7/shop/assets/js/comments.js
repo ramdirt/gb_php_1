@@ -1,5 +1,7 @@
-try {
-    const formAddComment = document.querySelector('#formAddComment')
+const url = './vendor/comments.php'
+
+const formAddComment = document.querySelector('#formAddComment')
+if(formAddComment) {
     formAddComment.addEventListener('submit', event => {
         event.preventDefault()
         addCommentDB()
@@ -15,7 +17,7 @@ try {
         formData.append('name', name);
         formData.append('text', text);
 
-        const res = await fetch('./comments.php', {
+        const res = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -36,20 +38,20 @@ try {
         const day = ("0" + ((new Date()).getDate())).slice(-2)
 
         const layout = `
-                     <div class="card p-3 mb-2">
-                        <div>
-                            <h6 class="mb-0">${name}</h6>
-                            <p class="mb-0 opacity-75">${text}</p>
-                        </div>
-                        <small class="opacity-50 text-nowrap">${year}-${mouth}-${day}</small>
+                 <div class="card p-3 mb-2">
+                    <div>
+                        <h6 class="mb-0">${name}</h6>
+                        <p class="mb-0 opacity-75">${text}</p>
                     </div>
-        `
+                    <small class="opacity-50 text-nowrap">${year}-${mouth}-${day}</small>
+                </div>
+    `
         comments.insertAdjacentHTML("afterbegin", layout)
     }
-} catch {}
+}
 
-try {
-    const formUpdateComment = document.querySelector('#formUpdateComment')
+const formUpdateComment = document.querySelector('#formUpdateComment')
+if (formUpdateComment) {
     formUpdateComment.addEventListener('submit', event => {
         event.preventDefault()
         updateCommentDB()
@@ -65,7 +67,7 @@ try {
         formData.append('name', name);
         formData.append('text', text);
 
-        const res = await fetch('./comments.php', {
+        const res = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -78,7 +80,49 @@ try {
             alert('Ошибка отправки комментария')
         }
     }
-} catch {}
+}
+
+const commentsContainer = document.querySelector('#comments')
+if (commentsContainer) {
+    async function getComments() {
+        function getID() {
+            let p = window.location.search;
+            p = p.match(new RegExp('id' + '=([^&=]+)'));
+            return p ? p[1] : false;
+        }
+
+        const res = await fetch(`${url}?id=${getID()}`);
+        const {data} = await res.json();
+
+        let markupToCommentsDiv = ""
+        data.forEach(comment => {
+            markupToCommentsDiv += commentLayout(comment)
+        })
+        commentsContainer.insertAdjacentHTML("afterbegin", markupToCommentsDiv)
+        deleteComment();
+    }
+    function commentLayout (comment) {
+        return `
+    <div id="comment" data-id="${comment.id}" class="card p-3 mb-2">
+        <div class="d-flex flex-row bd-highlight mb-3 justify-content-between">
+            <div class="bd-highlight">
+                <h6 class="mb-0">${comment.name}</h6>
+                <p class="mb-0 opacity-75">${comment.text}</p>
+            </div>
+            <div class="bd-highlight">
+                <small class="opacity-50 text-nowrap">${comment.date}</small>
+
+            </div>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="deleteComment" type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
+            <a id="updateComment" href="./update_comment.php?id=${comment.id}" type="button" class="btn btn-sm btn-outline-secondary">Изминить</a>
+        </div>
+    </div>
+`
+    }
+    getComments();
+}
 
 function deleteComment() {
     const buttonsDeleteComment = document.querySelectorAll('#deleteComment')
@@ -96,7 +140,7 @@ function deleteComment() {
         formData.append('action', 'delete')
         formData.append('id', id)
 
-        const res = await fetch('./comments.php', {
+        const res = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -118,46 +162,3 @@ function deleteComment() {
         })
     }
 }
-
-try {
-    const commentsContainer = document.querySelector('#comments')
-    async function getComments() {
-        function getID() {
-            let p = window.location.search;
-            p = p.match(new RegExp('id' + '=([^&=]+)'));
-            return p ? p[1] : false;
-        }
-
-        const res = await fetch(`./comments.php?id=${getID()}`);
-        const {data} = await res.json();
-
-        let markupToCommentsDiv = ""
-        data.forEach(comment => {
-            markupToCommentsDiv += commentLayout(comment)
-        })
-        commentsContainer.insertAdjacentHTML("afterbegin", markupToCommentsDiv)
-        deleteComment();
-    }
-    function commentLayout (comment) {
-        return `
-        <div id="comment" data-id="${comment.id}" class="card p-3 mb-2">
-            <div class="d-flex flex-row bd-highlight mb-3 justify-content-between">
-                <div class="bd-highlight">
-                    <h6 class="mb-0">${comment.name}</h6>
-                    <p class="mb-0 opacity-75">${comment.text}</p>
-                </div>
-                <div class="bd-highlight">
-                    <small class="opacity-50 text-nowrap">${comment.date}</small>
-
-                </div>
-            </div>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button id="deleteComment" type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
-                <a id="updateComment" href="./update_comment.php?id=${comment.id}" type="button" class="btn btn-sm btn-outline-secondary">Изминить</a>
-            </div>
-        </div>
-    `
-    }
-
-    getComments();
-} catch {}

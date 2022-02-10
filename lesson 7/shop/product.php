@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require './vendor/db.php';
 
 $id = (int)$_GET['id'];
 $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id = '$id'"));
@@ -13,10 +13,11 @@ $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id
     <title><?=$product['title']?></title>
 </head>
 <body>
-<div class="container mt-5 mb-5">
+<div class="container mb-5">
+    <?php require './vendor/layout/header.php' ?>
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-6 text-center">
-            <img class="img-thumbnail mb-3" src="./img/big/<?=$product['img']?>"/>
+            <img class="img-thumbnail mb-3" src="./assets/img/big/<?=$product['img']?>"/>
         </div>
         <div class="col-sm-12 col-md-6">
             <div>
@@ -29,7 +30,7 @@ $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id
                 <?php else: ?>
                     <p>Описания нет</p>
                 <?php endif; ?>
-                <button class="btn btn-danger">Добавить в корзину</button>
+                <button data-id="<?=$product['id']?>" class="btn btn-danger btn-add-basket">Добавить в корзину</button>
             </div>
             <div class="row justify-content-center mt-4 mb-5">
                 <div class="row">
@@ -63,6 +64,7 @@ $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id
     </div>
 
 </div>
-<script src="./main.js"></script>
+<script src="./assets/js/comments.js"></script>
+<script src="./assets/js/basket.js"></script>
 </body>
 </html>
