@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require './vendor/db.php';
 
 if (!empty($_GET)) {
     $id = (int)$_GET['id'];
@@ -39,6 +39,6 @@ $product_id = !empty($product) ? $product['product_id']: '';
             </div>
         </form>
     </div>
-    <script src="./main.js"></script>
+    <script src="./assets/js/comments.js"></script>
 </body>
 </html>
