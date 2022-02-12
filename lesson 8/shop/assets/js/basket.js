@@ -48,9 +48,9 @@ if(buttonsDeleteBasket) {
         const data = await res.json();
 
         if (data.status === true) {
-            alert('Товар добавлен в корзину')
+            alert('Товар удален из корзины')
         } else {
-            alert('Ошибка отправки комментария')
+            alert('Ошибка удаления')
         }
     }
 }

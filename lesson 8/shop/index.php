@@ -3,10 +3,6 @@ require './vendor/db.php';
 
 session_start();
 
-if(!$_SESSION['user']) {
-    header('location: ./auth.php');
-}
-
 $data = mysqli_query($db, "SELECT * FROM products");
 
 $products = array();

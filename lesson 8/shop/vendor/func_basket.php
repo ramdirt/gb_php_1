@@ -21,9 +21,16 @@ if ($method === "POST") {
 }
 
 function addProduct($db, $user_id, $id) {
-    $sql = "INSERT INTO basket (id, user_id, product_id) VALUES (NULL, '$user_id', '$id')";
-    mysqli_query($db, $sql);
-    responce(true);
+    $product = mysqli_query($db, "SELECT * FROM basket WHERE user_id = '$user_id' AND product_id = '$id'");
+    if (mysqli_num_rows($product) == 0) {
+        $sql = "INSERT INTO basket (id, user_id, product_id, quantity) VALUES (NULL, '$user_id', '$id', 1)";
+        mysqli_query($db, $sql);
+        responce(true, 'товар добавлен');
+    } else {
+        mysqli_query($db, "UPDATE basket SET quantity = quantity + 1 WHERE user_id = '$user_id' AND product_id = '$id'");
+        responce(true, 'значение увеличино');
+    }
+
 }
 
 function deleteProduct($db, $user_id, $id) {
