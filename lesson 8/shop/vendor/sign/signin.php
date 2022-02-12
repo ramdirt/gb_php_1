@@ -31,7 +31,8 @@
         $_SESSION['user'] = [
             "id" => $user['id'],
             "name" => $user['name'],
-            "email" => $user['email']
+            "login" => $user['login'],
+            "email" => $user['email'],
          ];
 
         responce(true, 'Авторизация прошла успешно');

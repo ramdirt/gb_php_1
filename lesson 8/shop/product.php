@@ -1,4 +1,5 @@
 <?php
+session_start();
 require './vendor/db.php';
 
 $id = (int)$_GET['id'];
@@ -30,11 +31,17 @@ $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id
                 <?php else: ?>
                     <p>Описания нет</p>
                 <?php endif; ?>
-                <button data-id="<?=$product['id']?>" class="btn btn-danger btn-add-basket">Добавить в корзину</button>
+                <?php if (!empty($_SESSION['user'])): ?>
+                    <button data-id="<?=$product['id']?>" class="btn btn-danger btn-add-basket">Добавить в корзину</button>
+                <?php else: ?>
+                    <p>Авторизуйтесь чтобы купить</p>
+                    <a href="./auth.php" class="btn btn-outline-primary">Авторизоватся</a>
+                <?php endif; ?>
             </div>
             <div class="row justify-content-center mt-4 mb-5">
                 <div class="row">
                     <div class="card">
+                        <?php if (!empty($_SESSION['user'])): ?>
                         <h4 class="mb-3 mt-2">Оставить комментарий</h4>
                         <form id="formAddComment" data-id="<?=$id?>">
                             <div class="row g-3">
@@ -53,9 +60,13 @@ $product = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM products WHERE id
                             </div>
                         </form>
                         <hr>
+
                         <div id="comments" class="mt-2 mb-2">
                             <!-- с помощью JS здесь появятся комменты -->
                         </div>
+                        <?php else: ?>
+                            <p class="mt-3">Авторизуйтесь чтобы видеть и оставлять комментарии</p>
+                        <?php endif; ?>
                     </div>
                 </div>
 

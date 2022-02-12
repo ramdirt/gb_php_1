@@ -7,7 +7,7 @@ if(!$_SESSION['user']) {
 
 $id = $_SESSION['user']['id'];
 
-$sql = "SELECT basket.id, basket.product_id, products.price, products.img, products.title FROM basket JOIN products ON basket.product_id = products.id WHERE user_id = '$id' GROUP BY basket.id";
+$sql = "SELECT basket.id, basket.product_id, basket.quantity, products.price, products.img, products.title FROM basket JOIN products ON basket.product_id = products.id WHERE user_id = '$id' GROUP BY basket.id";
 $data = mysqli_query($db, $sql);
 
 $products = array();
@@ -35,12 +35,17 @@ while($row = mysqli_fetch_assoc($data)) {
                 <div class="card-body">
                     <h5 class="card-title"><?=$product['title']?></h5>
                     <p class="cart-text">Стоимость: $<?=$product['price']?></p>
+                    <p class="cart-text">Количество: <?=$product['quantity']?></p>
                 </div>
                 <div class="card-footer">
                     <button data-id="<?=$product['id']?>" href="#" class="btn btn-sm btn-outline-danger btn-delete-basket">Удалить</button>
                 </div>
             </div>
         <?php endforeach;?>
+    </div>
+    <hr>
+    <div>
+        <a href="./vendor/make_order.php" class="btn btn-danger">Оформить заказ</a>
     </div>
 </div>
 
